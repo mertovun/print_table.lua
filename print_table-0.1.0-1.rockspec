@@ -1,16 +1,16 @@
-package = "tprint"
+package = "print_table"
 version = "0.1.0-1"
 source = {
-   url = "git://github.com/mertovun/tprint.git",
+   url = "git://github.com/mertovun/print_table.git",
    tag = "v0.1.0"
 }
 description = {
    summary = "A simple table printing module for Lua.",
    detailed = [[
-      tprint allows for easy printing of Lua tables, including nested tables,
+      print_table allows for easy printing of Lua tables, including nested tables,
       by providing a simple function call interface.
    ]],
-   homepage = "http://github.com/mertovun/tprint",
+   homepage = "http://github.com/mertovun/print_table",
    license = "MIT"
 }
 dependencies = {
@@ -19,6 +19,6 @@ dependencies = {
 build = {
    type = "builtin",
    modules = {
-     ["tprint"] = "tprint.lua"
+     ["print_table"] = "print_table.lua"
    }
 }

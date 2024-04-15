@@ -1,4 +1,4 @@
-local tprint = {}
+local print_table = {}
 
 local function traverse_table(tbl, callback, level, visited)
 	level = level or 0
@@ -28,10 +28,10 @@ local function print_kv(level, key, value)
 	end
 end
 
-setmetatable(tprint, {
+setmetatable(print_table, {
   __call = function(self, tbl)
       traverse_table(tbl, print_kv)
   end
 })
 
-return tprint
+return print_table
