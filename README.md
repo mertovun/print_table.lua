@@ -1,21 +1,21 @@
-# tprint.lua
+# print_table.lua
 
-`tprint.lua` module provides a simple way to print Lua tables, handling circular references gracefully. It's designed to be easy to use for debugging or logging complex table structures with minimal configuration.
+`print_table.lua` provides a simple way to print Lua tables, handling circular references gracefully. It's designed to be easy to use for debugging or logging complex table structures with minimal configuration.
 
 ## Installation
 
-To install the `tprint`, use LuaRocks:
+To install the `print_table`, use LuaRocks:
 
 ```bash
-luarocks install tprint
+luarocks install print_table
 ```
 
 ## Usage
 
-To use `tprint`, simply require the module and call it with the table you want to print:
+To use `print_table`, simply require the package and call it with the table you want to print:
 
 ```lua
-local tprint = require("tprint")
+local print_table = require("print_table")
 
 local myTable = {
     a = 1,
@@ -23,5 +23,5 @@ local myTable = {
     e = { f = { g = 4 }, h = 5 },
 }
 
-tprint(myTable)
+print_table(myTable)
 ```
