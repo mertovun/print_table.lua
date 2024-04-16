@@ -1,6 +1,30 @@
 local print_table = {}
 
-local function traverse_table(tbl, callback, level, visited)
+local function type_to_string(value, visited)
+    local valueType = type(value)
+    if valueType == "string" then
+        return string.format("%q", value)
+    elseif valueType == "nil" or valueType == "number" or valueType == "boolean" then
+        return tostring(value)
+    elseif valueType == "function" then
+        return "<function>"
+    elseif valueType == "userdata" then
+        return "<userdata>"
+    elseif valueType == "thread" then
+        return "<thread>"
+    elseif valueType == "table" then
+        -- Check if the table has been visited and return its path if so
+        if visited[value] then
+            return "<circular ref: " .. visited[value] .. ">"
+        else
+            return nil -- To be handled separately
+        end
+    else
+        return "<unknown>"
+    end
+end
+
+local function traverse_table(tbl, callback, level, visited, path)
 	level = level or 0
 	visited = visited or {}
 
