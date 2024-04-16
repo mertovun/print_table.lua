@@ -13,11 +13,10 @@ local function type_to_string(value, visited)
     elseif valueType == "thread" then
         return "<thread>"
     elseif valueType == "table" then
-        -- Check if the table has been visited and return its path if so
         if visited[value] then
             return "<circular ref: " .. visited[value] .. ">"
         else
-            return nil -- To be handled separately
+            return nil
         end
     else
         return "<unknown>"
@@ -42,7 +41,6 @@ local function traverse_table(tbl, callback, level, visited, path)
         if valueStr then
             callback(level, key, valueStr)
         else
-            -- It's a table; print its key, and the table content will be handled by recursion
             print(string.rep("  ", level) .. key .. ":")
             traverse_table(value, callback, level + 1, visited, keyPath)
         end
