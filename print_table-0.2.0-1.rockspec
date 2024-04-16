@@ -1,7 +1,7 @@
 package = "print_table"
 version = "0.2.0-1"
 source = {
-   url = "git://github.com/mertovun/print_table.lua.git",
+   url = "git@github.com:mertovun/print_table.lua.git",
    tag = "v0.2.0"
 }
 description = {
