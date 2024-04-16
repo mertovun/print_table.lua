@@ -1,8 +1,8 @@
 package = "print_table"
-version = "0.1.0-1"
+version = "0.2.0-1"
 source = {
    url = "git://github.com/mertovun/print_table.lua.git",
-   tag = "v0.1.0"
+   tag = "v0.2.0"
 }
 description = {
    summary = "A simple table printing module for Lua.",

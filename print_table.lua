@@ -1,31 +1,55 @@
 local print_table = {}
 
-local function traverse_table(tbl, callback, level, visited)
-	level = level or 0
-	visited = visited or {}
+local function type_to_string(value, visited)
+    local valueType = type(value)
+    if valueType == "string" then
+        return string.format("%q", value)
+    elseif valueType == "nil" or valueType == "number" or valueType == "boolean" then
+        return tostring(value)
+    elseif valueType == "function" then
+        return "<function>"
+    elseif valueType == "userdata" then
+        return "<userdata>"
+    elseif valueType == "thread" then
+        return "<thread>"
+    elseif valueType == "table" then
+        if visited[value] then
+            return "<circular ref: " .. visited[value] .. ">"
+        else
+            return nil
+        end
+    else
+        return "<unknown>"
+    end
+end
 
-	if visited[tbl] then
-			callback(level, "<circular ref>", nil)
-			return
-	end
+local function traverse_table(tbl, callback, level, visited, path)
+    level = level or 0
+    visited = visited or {}
+    path = path or "root"
 
-	visited[tbl] = true
+    if visited[tbl] then
+        callback(level, path, "<circular ref>", nil)
+        return
+    end
 
-	for key, value in pairs(tbl) do
-			callback(level, key, value)
-			if type(value) == "table" then
-					traverse_table(value, callback, level + 1, visited)
-			end
-	end
+    visited[tbl] = path
+
+    for key, value in pairs(tbl) do
+        local keyPath = path .. "." .. key
+        local valueStr = type_to_string(value, visited)
+        if valueStr then
+            callback(level, key, valueStr)
+        else
+            print(string.rep("  ", level) .. key .. ":")
+            traverse_table(value, callback, level + 1, visited, keyPath)
+        end
+    end
 end
 
 local function print_kv(level, key, value)
-	local indent = string.rep("  ", level)
-	if type(value) == "table" then
-			print(indent .. "Key " .. key .. ":")
-	else
-			print(indent .. "Key " .. key .. ": " .. tostring(value))
-	end
+    local indent = string.rep("  ", level)
+    print(indent .. key .. ": " .. value)
 end
 
 setmetatable(print_table, {
