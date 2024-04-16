@@ -25,31 +25,33 @@ local function type_to_string(value, visited)
 end
 
 local function traverse_table(tbl, callback, level, visited, path)
-	level = level or 0
-	visited = visited or {}
+    level = level or 0
+    visited = visited or {}
+    path = path or "root"
 
-	if visited[tbl] then
-			callback(level, "<circular ref>", nil)
-			return
-	end
+    if visited[tbl] then
+        callback(level, path, "<circular ref>", nil)
+        return
+    end
 
-	visited[tbl] = true
+    visited[tbl] = path
 
-	for key, value in pairs(tbl) do
-			callback(level, key, value)
-			if type(value) == "table" then
-					traverse_table(value, callback, level + 1, visited)
-			end
-	end
+    for key, value in pairs(tbl) do
+        local keyPath = path .. "." .. key
+        local valueStr = type_to_string(value, visited)
+        if valueStr then
+            callback(level, key, valueStr)
+        else
+            -- It's a table; print its key, and the table content will be handled by recursion
+            print(string.rep("  ", level) .. key .. ":")
+            traverse_table(value, callback, level + 1, visited, keyPath)
+        end
+    end
 end
 
 local function print_kv(level, key, value)
-	local indent = string.rep("  ", level)
-	if type(value) == "table" then
-			print(indent .. "Key " .. key .. ":")
-	else
-			print(indent .. "Key " .. key .. ": " .. tostring(value))
-	end
+    local indent = string.rep("  ", level)
+    print(indent .. key .. ": " .. value)
 end
 
 setmetatable(print_table, {
